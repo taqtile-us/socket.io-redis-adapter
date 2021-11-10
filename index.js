@@ -315,7 +315,7 @@ function adapter(uri, opts) {
       return;
     }
 
-    var requestid = response.requestid;
+    var requestid = response.requestid || response.requestId;
 
     if (!requestid || !self.requests[requestid]) {
       debug('ignoring unknown request');
@@ -330,6 +330,8 @@ function adapter(uri, opts) {
 
       case requestTypes.clients:
         request.msgCount++;
+
+        if (response.sockets) response.clients = response.sockets;
 
         // ignore if response does not contain 'clients' key
         if(!response.clients || !Array.isArray(response.clients)) return;
