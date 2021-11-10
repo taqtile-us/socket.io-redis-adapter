@@ -181,14 +181,14 @@ export class RedisAdapter extends Adapter {
 
     switch (request.type) {
       case RequestType.SOCKETS:
-        if (this.requests.has(request.requestId)) {
+        if (this.requests.has(request.requestId) || this.requests.has(request.requestid)) {
           return;
         }
 
         const sockets = await super.sockets(new Set(request.rooms));
 
         response = JSON.stringify({
-          requestId: request.requestId,
+          requestId: request.requestId || request.requestid,
           sockets: [...sockets],
         });
 
