@@ -202,7 +202,7 @@ function adapter(uri, opts) {
           }
 
           var response = JSON.stringify({
-            requestid: request.requestid,
+            requestid: request.requestid || request.requestId,
             clients: clients
           });
 
