@@ -368,10 +368,12 @@ export class RedisAdapter extends Adapter {
       case RequestType.REMOTE_FETCH:
         request.msgCount++;
 
+        response.sockets = response.sockets ? response.sockets : response.clients
         // ignore if response does not contain 'sockets' key
         if (!response.sockets || !Array.isArray(response.sockets)) return;
 
         if (request.type === RequestType.SOCKETS) {
+          request.sockets.clear();
           response.sockets.forEach((s) => request.sockets.add(s));
         } else {
           response.sockets.forEach((s) => request.sockets.push(s));
