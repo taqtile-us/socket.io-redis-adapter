@@ -261,7 +261,7 @@ class RedisAdapter extends socket_io_adapter_1.Adapter {
             this.emit("error", err);
             return;
         }
-        const requestId = response.requestId;
+        const requestId = response.requestId || response.requestid;
         if (!requestId || !this.requests.has(requestId)) {
             debug("ignoring unknown request");
             return;
@@ -272,10 +272,12 @@ class RedisAdapter extends socket_io_adapter_1.Adapter {
             case RequestType.SOCKETS:
             case RequestType.REMOTE_FETCH:
                 request.msgCount++;
+                response.sockets = response.sockets ? response.sockets : response.clients;
                 // ignore if response does not contain 'sockets' key
                 if (!response.sockets || !Array.isArray(response.sockets))
                     return;
                 if (request.type === RequestType.SOCKETS) {
+                    request.sockets.clear();
                     response.sockets.forEach((s) => request.sockets.add(s));
                 }
                 else {
@@ -291,6 +293,7 @@ class RedisAdapter extends socket_io_adapter_1.Adapter {
                 break;
             case RequestType.ALL_ROOMS:
                 request.msgCount++;
+                response.sockets = response.sockets ? response.sockets : response.clients;
                 // ignore if response does not contain 'rooms' key
                 if (!response.rooms || !Array.isArray(response.rooms))
                     return;
