@@ -352,7 +352,7 @@ export class RedisAdapter extends Adapter {
       return;
     }
 
-    const requestId = response.requestId;
+    const requestId = response.requestId || response.requestid;
 
     if (!requestId || !this.requests.has(requestId)) {
       debug("ignoring unknown request");
@@ -388,7 +388,7 @@ export class RedisAdapter extends Adapter {
 
       case RequestType.ALL_ROOMS:
         request.msgCount++;
-
+        response.sockets = response.sockets ? response.sockets : response.clients
         // ignore if response does not contain 'rooms' key
         if (!response.rooms || !Array.isArray(response.rooms)) return;
 
