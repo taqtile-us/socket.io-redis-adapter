@@ -277,7 +277,6 @@ class RedisAdapter extends socket_io_adapter_1.Adapter {
                 if (!response.sockets || !Array.isArray(response.sockets))
                     return;
                 if (request.type === RequestType.SOCKETS) {
-                    request.sockets.clear();
                     response.sockets.forEach((s) => request.sockets.add(s));
                 }
                 else {
