@@ -225,7 +225,7 @@ export class RedisAdapter extends Adapter {
         socket.join(request.room);
 
         response = JSON.stringify({
-          requestId: request.requestId,
+          requestId: request.requestId || request.requestid,
         });
 
         this.pubClient.publish(this.responseChannel, response);
@@ -248,7 +248,7 @@ export class RedisAdapter extends Adapter {
         socket.leave(request.room);
 
         response = JSON.stringify({
-          requestId: request.requestId,
+          requestId: request.requestId || request.requestid,
         });
 
         this.pubClient.publish(this.responseChannel, response);
