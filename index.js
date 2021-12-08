@@ -21,10 +21,10 @@ module.exports = adapter;
 
 var requestTypes = {
   clients: 0,
-  clientRooms: 1,
-  allRooms: 2,
-  remoteJoin: 3,
-  remoteLeave: 4,
+  allRooms: 1,
+  remoteJoin: 2,
+  remoteLeave: 3,
+  clientRooms: 4,
   customRequest: 5,
   remoteDisconnect: 6
 };
@@ -245,7 +245,7 @@ function adapter(uri, opts) {
 
         socket.join(request.room, function(){
           var response = JSON.stringify({
-            requestid: request.requestid
+            requestid: request.requestid || request.requestId
           });
 
           pub.publish(self.responseChannel, response);
@@ -259,7 +259,7 @@ function adapter(uri, opts) {
 
         socket.leave(request.room, function(){
           var response = JSON.stringify({
-            requestid: request.requestid
+            requestid: request.requestid || request.requestId
           });
 
           pub.publish(self.responseChannel, response);
